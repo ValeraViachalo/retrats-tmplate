@@ -1,0 +1,9 @@
+.header {
+  position: fixed;
+  inset: 0 0 auto 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  padding: EM(8);
+  background-color: $c-white;
+}

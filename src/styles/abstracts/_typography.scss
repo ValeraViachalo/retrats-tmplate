@@ -1,0 +1,41 @@
+@use "functions" as *;
+
+// -----------------------------------------------------------------------------
+// Typography
+//
+// Font family is provided by next/font as a CSS variable (see app/layout.js).
+// Sizes use EM() so they scale with the fluid base. Include these mixins on a
+// class or element; the concrete utility classes live in base/_base.scss.
+// -----------------------------------------------------------------------------
+
+$font-primary: var(--font-neue-haas-display), sans-serif;
+
+@mixin body-text {
+  font-family: $font-primary;
+  font-size: var(--size-font);
+  font-weight: 400;
+  line-height: 1.4;
+}
+
+@mixin h1 {
+  font-family: $font-primary;
+  font-size: EM(80);
+  font-weight: 700;
+  line-height: 1.42;
+  text-transform: uppercase;
+}
+
+@mixin super-text {
+  font-family: $font-primary;
+  font-size: EM(90);
+  font-weight: 700;
+  line-height: 0.9;
+  text-transform: uppercase;
+}
+
+@mixin small-text {
+  font-family: $font-primary;
+  font-size: EM(14);
+  font-weight: 400;
+  line-height: 1.4;
+}

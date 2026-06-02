@@ -1,0 +1,38 @@
+.scrollbar {
+  position: fixed;
+  inset: 0 0 0 auto;
+  z-index: 10000;
+  width: 1vw;
+  mix-blend-mode: difference;
+
+  @include hover {
+    .scrollbar__bar {
+      width: 0.6vw;
+    }
+  }
+
+  &__bar {
+    position: absolute;
+    right: 0;
+    width: 0.2vw;
+    height: 5%;
+    background-color: rgb(170, 130, 130);
+    transform: translateY(-100%);
+    transition: width 0.4s $ease-out-circ;
+  }
+
+  &__range {
+    position: absolute;
+    inset: 0 auto 0 0;
+    width: 100vh;
+    height: 2vw;
+    transform: rotate(90deg) translate(0, -0.5vw);
+    transform-origin: left;
+    opacity: 0;
+    cursor: grab;
+
+    &:active {
+      cursor: grabbing;
+    }
+  }
+}

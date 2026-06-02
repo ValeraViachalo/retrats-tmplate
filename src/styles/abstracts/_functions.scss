@@ -1,0 +1,17 @@
+// -----------------------------------------------------------------------------
+// Sizing functions
+//
+// Design workflow: read pixel values straight from the design, convert with EM().
+// EM() is relative to the fluid base (--size-unit / --size-font, see base/scaling),
+// so every value scales proportionally with the viewport between the breakpoints.
+// -----------------------------------------------------------------------------
+
+// px (from design) -> fluid em
+@function EM($px) {
+  @return calc($px / var(--size-unit) * 1em);
+}
+
+// px -> vw against a fixed design width (escape hatch for true viewport sizing)
+@function VW($px, $base: 1920) {
+  @return calc(($px / $base) * 100vw);
+}

@@ -1,0 +1,9 @@
+// -----------------------------------------------------------------------------
+// Global stylesheet — imported ONCE in app/layout.js.
+// Only this file emits the reset / scaling / base concrete rules.
+// Component styles get tokens & mixins auto-injected (see next.config.mjs).
+// -----------------------------------------------------------------------------
+
+@use "base/reset";
+@use "base/scaling";
+@use "base/base";

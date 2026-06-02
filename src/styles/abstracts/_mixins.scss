@@ -1,0 +1,57 @@
+@use "breakpoints" as *;
+
+// -----------------------------------------------------------------------------
+// Mixins
+// -----------------------------------------------------------------------------
+
+// Width-based media query using a named breakpoint.
+// `screen` is the default media type so responsive rules don't leak into print.
+// Pass `$media: null` for a bare query that applies to all media types.
+//   @include mq("mobile") { ... }                -> screen and (max-width: 768px)
+//   @include mq("tablet", "min") { ... }         -> screen and (min-width: 1025px)
+//   @include mq("mobile", $media: null) { ... }  -> (max-width: 768px)
+@mixin mq($name: "mobile", $type: "max", $media: screen) {
+  $value: bp($name);
+  $feature: null;
+
+  @if $type == "max" {
+    $feature: "(max-width: #{$value}px)";
+  } @else if $type == "min" {
+    $feature: "(min-width: #{$value + 1}px)";
+  } @else {
+    @error "mq() type must be `max` or `min`, got `#{$type}`.";
+  }
+
+  $query: $feature;
+  @if $media {
+    $query: "#{$media} and #{$feature}";
+  }
+
+  @media #{$query} {
+    @content;
+  }
+}
+
+// Range between two named breakpoints (exclusive lower, inclusive upper).
+//   @include mq-between("mobile", "tablet") { ... }
+@mixin mq-between($from, $to, $media: screen) {
+  $feature: "(min-width: #{bp($from) + 1}px) and (max-width: #{bp($to)}px)";
+
+  $query: $feature;
+  @if $media {
+    $query: "#{$media} and #{$feature}";
+  }
+
+  @media #{$query} {
+    @content;
+  }
+}
+
+// Hover styles only on devices that actually support hover.
+@mixin hover {
+  @media (hover: hover) {
+    &:hover {
+      @content;
+    }
+  }
+}

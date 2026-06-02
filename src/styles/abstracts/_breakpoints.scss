@@ -1,0 +1,21 @@
+@use "sass:map";
+
+// -----------------------------------------------------------------------------
+// Single source of truth for breakpoints (px thresholds).
+// Keep in sync with: src/lib/helpers/breakpoints.js
+// Used by: mixins (mq), base/scaling, JS media-query hooks.
+// -----------------------------------------------------------------------------
+
+$breakpoints: (
+  "small": 480,
+  "mobile": 768,
+  "tablet": 1024,
+  "desktop": 1440,
+);
+
+@function bp($name) {
+  @if not map.has-key($breakpoints, $name) {
+    @error "Unknown breakpoint `#{$name}`. Available: #{map.keys($breakpoints)}.";
+  }
+  @return map.get($breakpoints, $name);
+}

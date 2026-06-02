@@ -1,0 +1,15 @@
+// -----------------------------------------------------------------------------
+// Abstracts entry point.
+//
+// This file (and only this file) is auto-injected into every .scss entry via
+// `additionalData` in next.config.mjs, so components can use tokens, functions
+// and mixins WITHOUT importing anything. It must contain NO concrete CSS rules,
+// otherwise that CSS would be duplicated into every compiled stylesheet.
+// -----------------------------------------------------------------------------
+
+@forward "breakpoints";
+@forward "colors";
+@forward "easing";
+@forward "functions";
+@forward "mixins";
+@forward "typography";

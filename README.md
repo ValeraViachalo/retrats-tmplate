@@ -1,36 +1,95 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# RETRATS Template
 
-## Getting Started
+A clean creative-development starter on **Next.js 16** (App Router, Turbopack, React 19 + React Compiler), **Sass**, **Locomotive Scroll**, and **Motion**.
 
-First, run the development server:
+## Stack
+
+- **Next.js 16** — App Router, Turbopack, `reactCompiler` enabled
+- **Sass 1.100** — modern `@use`/`@forward`, tokens auto-injected (no manual imports)
+- **Locomotive Scroll 5** — smooth scrolling (built on Lenis)
+- **Motion 12** — animation + the custom progress scrollbar
+
+## Getting started
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000).
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+## Styling system
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```
+src/styles/
+  abstracts/        # tokens/functions/mixins — auto-injected, NO concrete rules
+    _breakpoints.scss   # single source of truth for breakpoints
+    _colors.scss
+    _easing.scss
+    _functions.scss     # EM() / VW()
+    _mixins.scss        # mq() / mq-between() / hover()
+    _typography.scss    # type mixins
+    _index.scss         # @forward entry (this is what gets injected)
+  base/             # concrete global rules, emitted ONCE
+    _reset.scss
+    _scaling.scss       # fluid --size-* variables
+    _base.scss          # body + utility classes
+  global.scss       # imported once in app/layout.js
+```
 
-## Learn More
+Every `.scss` file gets `@use "styles/abstracts" as *;` injected automatically
+(see `next.config.mjs`), so you can use `$c-text`, `EM(24)`,
+`@include mq("mobile")` etc. **without importing anything**.
 
-To learn more about Next.js, take a look at the following resources:
+### Fluid scaling
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Design in pixels, convert with `EM()`. Sizes scale proportionally with the
+viewport between breakpoints, driven by `--size-unit` / `--size-font` in
+`base/_scaling.scss`.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```scss
+.title {
+  font-size: EM(80); // 80px in the design → fluid
+  margin-bottom: EM(24);
+}
+```
 
-## Deploy on Vercel
+### Breakpoints
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+One map in `abstracts/_breakpoints.scss` (`small 480 / mobile 768 / tablet 1024
+/ desktop 1440`), mirrored for JS in `src/lib/helpers/breakpoints.js`.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```scss
+@include mq("mobile") {
+  /* max-width: 768px */
+}
+```
+
+## Smooth scroll
+
+`LocomotiveScrollProvider` wraps the app in `app/layout.js`. Access it anywhere:
+
+```jsx
+import { useLocomotiveScroll } from "@/lib/providers/LocomotiveScroll/LocomotiveScroll";
+
+const { scrollTo, start, stop, getLenis } = useLocomotiveScroll();
+```
+
+Anchor links scroll smoothly via a data attribute:
+
+```jsx
+<a data-scroll-to="#about">About</a>
+<section id="about" />
+```
+
+## Project structure
+
+```
+src/
+  app/            # routes, root layout, local fonts
+  components/     # page-level components (HomePage, ...)
+  utils/          # reusable UI (Header, Footer, Logo, Content, ScrollBar)
+  lib/
+    providers/    # LocomotiveScroll provider/context
+    helpers/      # anim, ease, breakpoints, useMediaQuery, defaultMetadata
+  styles/         # abstracts + base + global.scss
+```

@@ -1,0 +1,58 @@
+@use "../abstracts" as *;
+
+// -----------------------------------------------------------------------------
+// Fluid scaling system
+//
+// Everything scales proportionally with the viewport ("zoom to design"),
+// clamped between a min and max width per breakpoint tier.
+//
+//   --size-unit            base font size in the design (px, unitless here)
+//   --size-container-ideal design canvas width for this tier (px, unitless)
+//   --size-container       effective width, clamped to [min, max]
+//   --size-font            fluid base font size -> drives EM() everywhere
+//
+// Thresholds come from the breakpoint map so they can never drift.
+// -----------------------------------------------------------------------------
+
+:root {
+  --size-unit: 16;
+  --size-container-ideal: 1440;
+  --size-container-min: 1024px;
+  --size-container-max: 1920px;
+  --size-container: clamp(
+    var(--size-container-min),
+    100vw,
+    var(--size-container-max)
+  );
+  --size-font: calc(
+    var(--size-container) / (var(--size-container-ideal) / var(--size-unit))
+  );
+}
+
+/* Tablet */
+@include mq("tablet") {
+  :root {
+    --size-container-ideal: 834;
+    --size-container-min: 768px;
+    --size-container-max: #{bp("tablet")}px;
+  }
+}
+
+/* Mobile landscape */
+@include mq("mobile") {
+  :root {
+    --size-container-ideal: 550;
+    --size-container-min: 480px;
+    --size-container-max: #{bp("mobile")}px;
+  }
+}
+
+/* Mobile portrait */
+@include mq("small") {
+  :root {
+    --size-unit: 14;
+    --size-container-ideal: 375;
+    --size-container-min: 320px;
+    --size-container-max: #{bp("small")}px;
+  }
+}
