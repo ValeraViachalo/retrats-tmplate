@@ -23,12 +23,6 @@
   h1 {
     @include h1;
   }
-
-  a {
-    @include hover {
-      opacity: 0.7;
-    }
-  }
 }
 
 // Layout container
